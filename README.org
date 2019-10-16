@@ -1,0 +1,24 @@
+#+begin_src python :exports results :results drawer
+  import convert_to_plaintext
+  return convert_to_plaintext.__doc__
+#+end_src
+
+#+RESULTS:
+:results:
+
+Script to convert HTML output from [[https://github.com/fabianonline/telegram_backup][telegram_backup]] tool to plaintext with proper filenames.
+
+I'm using it for quick search (e.g. =grep=) in messages without having to go to web interface/mobile app.
+
+Usage:
+
+1. Read [[https://github.com/fabianonline/telegram_backup#usage][usage for telegram_backup]] to backup your account. Don't forget to run =--export html=!
+   Personally I've got this set up as a daily Cron job.
+2. Run this script with the same =--target= and =--account= arguments as for backup script.
+
+Dependencies:
+
+- ~apt install sqlite3 html2text~
+
+:end:
+
