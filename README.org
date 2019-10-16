@@ -10,15 +10,15 @@ Script to convert HTML output from [[https://github.com/fabianonline/telegram_ba
 
 I'm using it for quick search (e.g. =grep=) in messages without having to go to web interface/mobile app.
 
-Usage:
+* Usage
 
 1. Read [[https://github.com/fabianonline/telegram_backup#usage][usage for telegram_backup]] to backup your account. Don't forget to run =--export html=!
-   Personally I've got this set up as a daily Cron job.
-2. Run this script with the same =--target= and =--account= arguments as for backup script.
+2. Run this script with the same =--target= and =--account= arguments as for backup script, and pass =--output= directory.
 
-Dependencies:
+Personally I've got all this set up as a daily Cron job.
 
-- ~apt install sqlite3 html2text~
+** Dependencies
+
+~apt install sqlite3 html2text~
 
 :end:
-
