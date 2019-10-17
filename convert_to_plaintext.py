@@ -19,9 +19,12 @@ Personally I've got all this set up as a daily Cron job.
 
 from pathlib import Path
 from subprocess import check_call, check_output
+from fnmatch import fnmatch
+from typing import Optional
 
 import re
 import string
+import sys
 
 
 USER_RE = re.compile(r'user_(?P<id>\d+)(?P<page>_p\d+)?')
@@ -45,7 +48,7 @@ def query(db: Path, what: str, from_: str, where: str):
 
 
 def get_output_name(*, db: Path, path: Path) -> str:
-    print(f'processing: {path}')
+    print(f'processing: {path}', file=sys.stderr)
     um = USER_RE.match(path.name)
     cm = CHAT_RE.match(path.name)
     name: str
@@ -64,19 +67,18 @@ def get_output_name(*, db: Path, path: Path) -> str:
     else:
         raise RuntimeError(f'Unexpected file name: {path}')
     return name
-    # TODO FIXME!
-    # if 'ntfybot' in name:
-    #     print('ignoring ' + name)
-    #     return
 
 
-def run(*, export_dir: Path, output: Path) -> None:
+def run(*, export_dir: Path, output: Path, ignore: Optional[str]=None) -> None:
     output.mkdir(parents=True, exist_ok=True)
 
     htmls  = export_dir / 'files' / 'dialogs'
     db     = export_dir / 'database.sqlite'
     for path in sorted(htmls.glob('*.html')):
         name = get_output_name(db=db, path=path)
+        if ignore is not None and fnmatch(name, ignore):
+            print(f'Ignoring {path} due to name: {name}', file=sys.stderr)
+            continue
 
         out = output / (name + ".txt")
         check_call([
@@ -94,11 +96,12 @@ def main():
     p.add_argument('--target' , type=Path, help='same option as for telegram_backup tool', required=True)
     p.add_argument('--account', type=str , help='same option as for telegram_backup tool', required=True)
     p.add_argument('--output' , type=Path, help='path for txt outputs'                   , required=True)
+    p.add_argument('--ignore' , type=str , help='glob for ignoring certain names'        , required=False)
     # TODO FIXME ignore targets?
     args = p.parse_args()
 
     export_dir = args.target / args.account
-    run(export_dir=export_dir, output=args.output)
+    run(export_dir=export_dir, output=args.output, ignore=args.ignore)
 
 
 if __name__ == '__main__':
