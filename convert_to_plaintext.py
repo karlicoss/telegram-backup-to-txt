@@ -2,7 +2,7 @@
 """
 Script to convert HTML output from [[https://github.com/fabianonline/telegram_backup][telegram_backup]] tool to plaintext with proper filenames.
 
-I'm using it for quick search (e.g. =grep=) in messages without having to go to web interface/mobile app.
+I'm using it for quick search (e.g. =grep=) in messages without having to go to web interface/mobile app. You can read more about it [[https://beepb00p.xyz/pkm-search.html#other][here]].
 
 * Usage
 
