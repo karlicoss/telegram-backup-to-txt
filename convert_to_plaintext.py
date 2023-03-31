@@ -74,7 +74,9 @@ def run(*, export_dir: Path, output: Path, ignore: Optional[str]=None) -> None:
 
     htmls  = export_dir / 'files' / 'dialogs'
     db     = export_dir / 'database.sqlite'
-    for path in sorted(htmls.glob('*.html')):
+    html_files = sorted(htmls.glob('*.html'))
+    assert len(html_files) > 0, htmls
+    for path in html_files:
         name = get_output_name(db=db, path=path)
         if ignore is not None and fnmatch(name, ignore):
             print(f'Ignoring {path} due to name: {name}', file=sys.stderr)
